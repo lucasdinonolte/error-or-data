@@ -1,16 +1,16 @@
 import typescript from '@rollup/plugin-typescript';
 import dts from 'rollup-plugin-dts';
 
-export default [
+const makeConfig = ({ input, outName }) => [
   {
-    input: 'src/index.ts',
+    input,
     output: [
       {
-        file: 'dist/index.js',
+        file: `dist/${outName}.js`,
         format: 'esm',
       },
       {
-        file: 'dist/index.cjs',
+        file: `dist/${outName}.cjs`,
         format: 'cjs',
       },
     ],
@@ -25,9 +25,13 @@ export default [
       }),
     ],
   },
+];
+
+export default [
+  ...makeConfig({ input: 'src/index.ts', outName: 'index' }),
   {
-    input: 'dist/types/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+    input: `dist/types/index.d.ts`,
+    output: [{ file: `dist/index.d.ts`, format: 'esm' }],
     plugins: [dts()],
   },
 ];
